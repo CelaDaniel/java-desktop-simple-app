@@ -83,45 +83,58 @@ public class DatabaseInterfaceGUI extends JFrame {
     }
 
     private void setupUI() {
-        getContentPane().setLayout(new BorderLayout()); // Use BorderLayout for easier centering
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 10, 10)); // Use a GridLayout for the buttons
-        buttonPanel.setBackground(Color.LIGHT_GRAY); // Match the background color
-        getContentPane().setBackground(Color.LIGHT_GRAY); // Set background color
+        getContentPane().setLayout(new BorderLayout());
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 10, 10));
+        buttonPanel.setBackground(Color.LIGHT_GRAY);
+        getContentPane().setBackground(Color.LIGHT_GRAY);
 
-        createTableBtn = new JButton("Create Table");
-        insertBtn = new JButton("Insert Record");
-        deleteBtn = new JButton("Delete Record");
-        showRecordsBtn = new JButton("Show Records");
+        // Initialize buttons with specific functionality colors
+        createTableBtn = createButton("Create Table", new Color(0, 153, 0)); // Green
+        insertBtn = createButton("Insert Record", new Color(0, 0, 153)); // Blue
+        deleteBtn = createButton("Delete Record", Color.RED); // Red, stays red on hover
+        showRecordsBtn = createButton("Show Records", new Color(255, 204, 0)); // Yellow
 
-        JButton[] buttons = {createTableBtn, insertBtn, deleteBtn, showRecordsBtn};
-        for (JButton button : buttons) {
-            button.setForeground(Color.WHITE); // Set text color to white by default
-            button.setBackground(new Color(51, 51, 51)); // Default background
-            button.setFocusPainted(false);
-            button.setBorderPainted(false);
-            button.setOpaque(true);
-            button.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    button.setBackground(Color.WHITE); // Change background on hover
-                    button.setForeground(new Color(51, 51, 51)); // Text color to #333
-                }
+        buttonPanel.add(createTableBtn);
+        buttonPanel.add(insertBtn);
+        buttonPanel.add(deleteBtn);
+        buttonPanel.add(showRecordsBtn);
 
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    button.setBackground(new Color(51, 51, 51)); // Revert background
-                    button.setForeground(Color.WHITE); // Revert text color
-                }
-            });
-            buttonPanel.add(button); // Add the button to the panel
-        }
-
-        add(buttonPanel, BorderLayout.CENTER); // Add the panel to the center of the layout
+        add(buttonPanel, BorderLayout.CENTER);
 
         setSize(800, 500);
-        setLocationRelativeTo(null); // Center on screen
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    private JButton createButton(String text, Color bgColor) {
+        JButton button = new JButton(text);
+        button.setForeground(Color.WHITE);
+        button.setBackground(bgColor);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(true);
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (bgColor.equals(Color.RED)) {
+                    // Keep red buttons red on hover
+                    button.setBackground(Color.RED);
+                    button.setForeground(Color.WHITE);
+                } else {
+                    // For other buttons, change on hover
+                    button.setBackground(Color.WHITE);
+                    button.setForeground(bgColor);
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(bgColor);
+                button.setForeground(Color.WHITE);
+            }
+        });
+        return button;
     }
 
     private void setupActions() {
