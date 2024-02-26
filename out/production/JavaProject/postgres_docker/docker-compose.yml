@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: postgres_container_db_jeton
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: JetonDauti
+      POSTGRES_PASSWORD: JetonDauti
+      POSTGRES_DB: jeton_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    container_name: pgadmin4_container_pgadmin_jeton
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: jeton@jeton.com
+      PGADMIN_DEFAULT_PASSWORD: JetonDauti
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  pgadmin_data:

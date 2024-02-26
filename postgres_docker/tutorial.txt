@@ -1,0 +1,11 @@
+https://www.youtube.com/watch?v=qECVC6t_2mU&ab_channel=Randomcode
+
+Updating the Services: : docker-compose down && docker-compose up -d --build
+
+Rebuilding the Services: docker-compose up -d --build
+
+get ipadress of pg : 
+
+docker container ls
+
+docker inspect <container_ID>
