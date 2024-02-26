@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
 // Database Operations class
 class DatabaseOperations {
     private final Connection conn;
@@ -77,24 +76,50 @@ public class DatabaseInterfaceGUI extends JFrame {
     private final DatabaseOperations dbOps;
 
     public DatabaseInterfaceGUI() {
+        super("Database Interface App"); // Set title of the window
         dbOps = new DatabaseOperations();
         setupUI();
         setupActions();
     }
 
     private void setupUI() {
-        setLayout(new FlowLayout());
+        getContentPane().setLayout(new BorderLayout()); // Use BorderLayout for easier centering
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 10, 10)); // Use a GridLayout for the buttons
+        buttonPanel.setBackground(Color.LIGHT_GRAY); // Match the background color
+        getContentPane().setBackground(Color.LIGHT_GRAY); // Set background color
+
         createTableBtn = new JButton("Create Table");
         insertBtn = new JButton("Insert Record");
         deleteBtn = new JButton("Delete Record");
         showRecordsBtn = new JButton("Show Records");
 
-        add(createTableBtn);
-        add(insertBtn);
-        add(deleteBtn);
-        add(showRecordsBtn);
+        JButton[] buttons = {createTableBtn, insertBtn, deleteBtn, showRecordsBtn};
+        for (JButton button : buttons) {
+            button.setForeground(Color.WHITE); // Set text color to white by default
+            button.setBackground(new Color(51, 51, 51)); // Default background
+            button.setFocusPainted(false);
+            button.setBorderPainted(false);
+            button.setOpaque(true);
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    button.setBackground(Color.WHITE); // Change background on hover
+                    button.setForeground(new Color(51, 51, 51)); // Text color to #333
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    button.setBackground(new Color(51, 51, 51)); // Revert background
+                    button.setForeground(Color.WHITE); // Revert text color
+                }
+            });
+            buttonPanel.add(button); // Add the button to the panel
+        }
+
+        add(buttonPanel, BorderLayout.CENTER); // Add the panel to the center of the layout
 
         setSize(800, 500);
+        setLocationRelativeTo(null); // Center on screen
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
